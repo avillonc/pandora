@@ -43,133 +43,44 @@ const router = createRouter({
           meta: {
             requiresAuth: true,
           },
-        },
+        }, 
         {
-          path: 'horarios',
-          name: 'horarios',
-          component: () => import('../views/horarios/index.vue'),
+          path: 'citasProgramar',
+          name: 'citasProgramar',
+          component: () => import('../views/citas/index.vue'),
           beforeEnter: ifAuthenticated,
           meta: {
             requiresAuth: true,
           },
         },
         {
-          path: 'survey',
-          name: 'survey',
-          component: () => import('../views/survey/index.vue'),
+          path: 'misCitas',
+          name: 'misCitas',
+          component: () => import('../views/mis-citas/index.vue'),
           beforeEnter: ifAuthenticated,
           meta: {
             requiresAuth: true,
           },
         },
         {
-          path: 'service_request',
-          name: 'service_request',
-          component: () => import('../views/service-request/index.vue'),
+          path: 'mis-documentos',
+          name: 'mis-documentos',
+          component: () => import('../views/mis-documentos/index.vue'),
           beforeEnter: ifAuthenticated,
           meta: {
             requiresAuth: true,
           },
-        },
+        }, 
+
         {
-          path: 'bloques',
-          name: 'bloques',
-          component: () => import('../views/bloques/index.vue'),
+          path: 'mis-datos',
+          name: 'mis-datos',
+          component: () => import('../views/mis-datos/index.vue'),
           beforeEnter: ifAuthenticated,
           meta: {
             requiresAuth: true,
           },
-        },
-        {
-          path: 'tarifario',
-          name: 'tarifario',
-          component: () => import('../views/tarifario/index.vue'),
-          beforeEnter: ifAuthenticated,
-          meta: {
-            requiresAuth: true,
-          },
-        },
-        {
-          path: 'terminos',
-          name: 'terminos',
-          component: () => import('../views/terminos/index.vue'),
-          beforeEnter: ifAuthenticated,
-          meta: {
-            requiresAuth: true,
-          },
-        },        
-        {
-          path: 'isiljob',
-          name: 'isiljob',
-          component: () => import('../views/isiljob/index.vue'),
-          beforeEnter: ifAuthenticated,
-          meta: {
-            requiresAuth: true,
-          },
-        },        
-        {
-          path: 'examenes',
-          name: 'examenes',
-          component: () => import('../views/examen/index.vue'),
-          beforeEnter: ifAuthenticated,
-          meta: {
-            requiresAuth: true,
-          },
-        },
-        {
-          path: 'biblioteca_virtual',
-          name: 'biblioteca_virtual',
-          component: () => import('../views/biblioteca_virtual/index.vue'),
-          beforeEnter: ifAuthenticated,
-          meta: {
-            requiresAuth: true,
-          },
-        },
-        {
-          path: 'cursos',
-          name: 'cursos',
-          component: () => import('../views/cursos/index.vue'),
-          beforeEnter: ifAuthenticated,
-          meta: {
-            requiresAuth: true,
-          },
-        },
-        {
-          path: 'egresados',
-          name: 'egresados',
-          component: () => import('../views/egresados/index.vue'),
-          beforeEnter: ifAuthenticated,
-          meta: {
-            requiresAuth: true,
-          },
-        },
-        {
-          path: 'interview',
-          name: 'interview',
-          component: () => import('../views/interview/index.vue'),
-          beforeEnter: ifAuthenticated,
-          meta: {
-            requiresAuth: true,
-          },
-        },
-        {
-          path: 'new-teacher',
-          name: 'new-teacher',
-          component: () => import('../views/interview-new-teacher/index.vue'),
-          beforeEnter: ifAuthenticated,
-          meta: {
-            requiresAuth: true,
-          },
-        },
-        {
-          path: 'variables',
-          name: 'variables',
-          component: () => import('../views/maintainer/variables/Variables.vue'),
-          beforeEnter: ifAuthenticated,
-          meta: {
-            requiresAuth: true,
-          },
-        },
+        }, 
       ],
     },
     {

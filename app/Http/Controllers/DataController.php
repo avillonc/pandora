@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Models\Programs;
 use App\Models\Variables;
+use App\Models\Data;
 use App\Models\PaymentMethods;
 
 class DataController extends Controller
@@ -25,11 +26,10 @@ class DataController extends Controller
         return response($items, Response::HTTP_OK);
     }
 
-    public function getPrograms()
+    public function getMaestras(Request $request)
     {
-        $response = Programs::select(DB::RAW("majr_code, concat(majr_code, ' - ' , program_name) name"))->get();
-
-        return response($response->jsonSerialize(), Response::HTTP_OK);
+        $data = Data::getMaestras($request);
+        return response($data, Response::HTTP_OK);
     }
 
     public function getConfiguration(Request $request)
@@ -38,57 +38,7 @@ class DataController extends Controller
 
         return response($items, Response::HTTP_OK);
     }
-
-    public function getCurrentTermCode()
-    {
-        $items = Variables::where('name', 'term_code')
-            ->select(DB::RAW("defaultvalue as termcode, descripcion"))->first();
-
-        //dd($items);
-        return response($items, Response::HTTP_OK);
-        // Llamada al procedimiento almacenado usando Eloquent y DB
-        /*$pdo = DB::connection('oracle')->getPdo();
-        $stmt = $pdo->prepare("BEGIN ISIL.SP_ISILNET_GET_PERIODO_ACTUAL(:cursor); END;");
-        $stmt->bindParam(':cursor', $cursor, \PDO::PARAM_STMT | \PDO::PARAM_INPUT_OUTPUT);
-
-        // Ejecutar la llamada al procedimiento almacenado
-        $stmt->execute();
-
-        oci_execute($cursor);
-        oci_fetch_all($cursor, $data, null, null, OCI_FETCHSTATEMENT_BY_ROW);
-        //dd($data);
-        return response()->json(['result' => $data[0]]);*/
-    }
-
-    public function getTypeObservation()
-    {
-
-        $query = "select 1 ORDEN,STVCTYP_DESC DEC, STVCTYP_CODE TIPO
-            from STVCTYP
-            where STVCTYP_CODE='ENP'
-            union all
-            select 2, STVCTYP_DESC DEC, STVCTYP_CODE TIPO
-            from STVCTYP
-            where STVCTYP_CODE<>'ENP'
-            order by 1";
-
-        $items = DB::connection('oracle')->select($query);
-
-        return response($items, Response::HTTP_OK);
-    }
-
-    public function getTypePaymentsHarson()
-    {
-        $query = "SELECT distinct TBBDETC_DETAIL_CODE codigo, TBBDETC_DESC descr  
-                from tbbdetc
-                where 
-                    tbbdetc_detail_code LIKE 'H%' and tbbdetc_detail_code NOT IN ('REGI') order by TBBDETC_DETAIL_CODE";
-
-        $items = DB::connection('oracle')->select($query);
-
-        return response($items, Response::HTTP_OK);
-    }
-
+ 
     public function getUsers(Request $request)
     {
 
@@ -103,17 +53,5 @@ class DataController extends Controller
         return response($items, Response::HTTP_OK);
     }
 
-    public function getStatusSolicitud()
-    {
-        $query = "select STVAPST_CODE codigo, INITCAP(STVAPST_DESC) descr from stvapst";
-        $items = DB::connection('oracle')->select($query);
-
-        return response($items, Response::HTTP_OK);
-    }
-
-    public function getPaymentMethods()
-    {
-        $response = PaymentMethods::get();
-        return response($response->jsonSerialize(), Response::HTTP_OK);
-    }
+ 
 }

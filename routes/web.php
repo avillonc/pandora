@@ -50,51 +50,37 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:sanctum'], function () {
 Route::group(['prefix' => 'data', 'middleware' => 'auth:sanctum'], function () {
     Route::get('termcode', [\App\Http\Controllers\DataController::class, 'getTermcode']);
     Route::post('currentTermCode', [\App\Http\Controllers\DataController::class, 'getCurrentTermCode']);
-    Route::get('getPrograms', [\App\Http\Controllers\DataController::class, 'getPrograms']);
-    Route::post('getMisDatos', [\App\Http\Controllers\DataController::class, 'getMisDatos']);
-
-    Route::post('getPaymentMethods', [\App\Http\Controllers\DataController::class, 'getPaymentMethods']);
-
-    Route::post('getConfiguration', [\App\Http\Controllers\DataController::class, 'getConfiguration']);
-    Route::get('getTypeObservation', [\App\Http\Controllers\DataController::class, 'getTypeObservation']);
-    Route::get('getTypePaymentsHarson', [\App\Http\Controllers\DataController::class, 'getTypePaymentsHarson']);
     Route::post('getUsers', [\App\Http\Controllers\DataController::class, 'getUsers']);
+    Route::post('get-maestras', [\App\Http\Controllers\DataController::class, 'getMaestras']); 
 });
 
-Route::group(['prefix' => 'alumnos', 'middleware' => 'auth:sanctum'], function () {
-    Route::post('horarios-nrcs', [\App\Http\Controllers\HorariosController::class, 'getNrcs']);
-    Route::post('horarios', [\App\Http\Controllers\HorariosController::class, 'getHorarios']);
-    Route::post('datos', [\App\Http\Controllers\BloqueController::class, 'getDatosAlumno']);
-    Route::post('bloques-disponibles', [\App\Http\Controllers\BloqueController::class, 'getBloquesDisponibles']);
-    Route::post('examenes', [\App\Http\Controllers\ExamenesController::class, 'getExamenes']);
-    Route::post('tarifario-disponibles', [\App\Http\Controllers\TarifarioController::class, 'getBloquesDisponibles']);
-    Route::post('datos-tarifario', [\App\Http\Controllers\TarifarioController::class, 'getDatosTarifario']);
-    Route::post('datos-bolsalaboral', [\App\Http\Controllers\BolsaLaboralController::class, 'getDatosBolsaLaboral']);
-    Route::post('cursos', [\App\Http\Controllers\CursosController::class, 'getCursos']);
-    Route::post('terminos-condiciones-save', [\App\Http\Controllers\TerminosController::class, 'saveTerminos']);
-    Route::post('terminos-validate', [\App\Http\Controllers\TerminosController::class, 'validateTerminos']);
+Route::group(['prefix' => 'programming','middleware' => 'auth:sanctum'], function () {
+    Route::resource('appointments', \App\Http\Controllers\AppointmentController::class);
+    Route::post('listProgramacionPsicologia', [\App\Http\Controllers\AppointmentController::class, 'listProgramacionPsicologia']); 
+    Route::post('programacionHoraria', [\App\Http\Controllers\AppointmentController::class, 'registrarHorario']); 
+    Route::post('getCuposDisponibles', [\App\Http\Controllers\AppointmentController::class, 'getCuposDisponibles']); 
+    Route::post('listPsicologos', [\App\Http\Controllers\AppointmentController::class, 'listPsicologos']); 
+    Route::post('listarCalendario', [\App\Http\Controllers\AppointmentController::class, 'listarCalendario']); 
+    Route::post('listCantSesiones', [\App\Http\Controllers\AppointmentController::class, 'listCantSesiones']); 
+    Route::post('listAtencionesPaciente', [\App\Http\Controllers\AppointmentController::class, 'listAtencionesPaciente']); 
+    Route::post('registrarCita', [\App\Http\Controllers\AppointmentController::class, 'registrarCita']);  
+    Route::post('citaPacienteDetalle', [\App\Http\Controllers\AppointmentController::class, 'citaPacienteDetalle']); 
+    Route::post('registrarFicha', [\App\Http\Controllers\AppointmentController::class, 'registrarFicha']); 
+    Route::post('getFicha', [\App\Http\Controllers\AppointmentController::class, 'getFicha']); 
+    Route::post('getCitas', [\App\Http\Controllers\AppointmentController::class, 'getCitas']); 
+    Route::post('cancelarCita', [\App\Http\Controllers\AppointmentController::class, 'cancelarCita']); 
+    Route::post('getDocumentos', [\App\Http\Controllers\AppointmentController::class, 'getDocumentos']); 
+    Route::post('buscarAlumnoxDni', [\App\Http\Controllers\AppointmentController::class, 'buscarAlumnoxDni']);
+    Route::post('getInformes', [\App\Http\Controllers\AppointmentController::class, 'getInformes']); 
+    Route::post('grabarDocumentos', [\App\Http\Controllers\AppointmentController::class, 'grabarDocumentos']); 
+    Route::get('view-document/{file}', [\App\Http\Controllers\AppointmentController::class, 'viewDocument']);
+    Route::post('eliminarDocumento', [\App\Http\Controllers\AppointmentController::class, 'eliminarDocumento']); 
+    Route::post('registrarInforme', [\App\Http\Controllers\AppointmentController::class, 'registrarInforme']); 
+    Route::post('getPaciente', [\App\Http\Controllers\AppointmentController::class, 'getPaciente']);
+    Route::post('actualizarDatos', [\App\Http\Controllers\AppointmentController::class, 'actualizarDatos']);
 });
 
-Route::group(['prefix' => 'students', 'middleware' => 'auth:sanctum'], function () {
-    Route::resource('survey', \App\Http\Controllers\SurveyController::class);
-    Route::post('getsurvey', [\App\Http\Controllers\SurveyController::class, 'getSurvey']);
-    Route::resource('service', \App\Http\Controllers\ServiceController::class);
-    Route::post('getdatos', [\App\Http\Controllers\ServiceController::class, 'getDatosConfirmar']);
-    Route::resource('interview', \App\Http\Controllers\InterviewController::class);
-    Route::resource('interview-new', \App\Http\Controllers\InterviewNewTeacherController::class);
-});
 
-Route::group(['prefix' => 'maintenance', 'middleware' => 'auth:sanctum'], function () {
-    Route::resource('variables',   \App\Http\Controllers\VariablesController::class);
-    Route::get('variables/{id}', [\App\Http\Controllers\VariablesController::class, 'search']);
-});
-Route::group(['prefix' => 'minedu', 'middleware' => 'auth:sanctum'], function () {
-    Route::post('getegresados', [\App\Http\Controllers\EgresadoController::class, 'rptEgresadosMinisterio']); 
-    Route::post('termcode', [\App\Http\Controllers\EgresadoController::class, 'getTermcode']);  
-    Route::post('carrerasbynivel', [\App\Http\Controllers\EgresadoController::class, 'getCarreraAllByNivel']); 
-    Route::post('get-maestras', [\App\Http\Controllers\EgresadoController::class, 'getMaestras']); 
-     
-});
 Route::get('{any?}', function () {
     return view('application');
 })->where('any', '.*');

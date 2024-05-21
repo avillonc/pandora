@@ -346,10 +346,10 @@
   resolved "https://registry.npmjs.org/@csstools/selector-specificity/-/selector-specificity-2.2.0.tgz"
   integrity sha512-+OJ9konv95ClSTOJCmMZqpd5+YGsB2S+x6w3E1oaM8UuR5j8nTNHYSz8c9BEPGDOCMQYIEEGlVPj/VY64iTbGw==
 
-"@esbuild/win32-ia32@0.18.16":
+"@esbuild/win32-x64@0.18.16":
   version "0.18.16"
-  resolved "https://registry.npmjs.org/@esbuild/win32-ia32/-/win32-ia32-0.18.16.tgz"
-  integrity sha512-5PFPmq3sSKTp9cT9dzvI67WNfRZGvEVctcZa1KGjDDu4n3H8k59Inbk0du1fz0KrAbKKNpJbdFXQMDUz7BG4rQ==
+  resolved "https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.18.16.tgz"
+  integrity sha512-sCIVrrtcWN5Ua7jYXNG1xD199IalrbfV2+0k/2Zf2OyV2FtnQnMgdzgpRAbi4AWlKJj1jkX+M+fEGPQj6BQB4w==
 
 "@eslint-community/eslint-utils@^4.1.2", "@eslint-community/eslint-utils@^4.2.0", "@eslint-community/eslint-utils@^4.3.0", "@eslint-community/eslint-utils@^4.4.0":
   version "4.4.0"
@@ -395,10 +395,10 @@
   dependencies:
     "@floating-ui/core" "^1.2.6"
 
-"@fullcalendar/core@^6.1.7", "@fullcalendar/core@~6.1.7":
-  version "6.1.7"
-  resolved "https://registry.npmjs.org/@fullcalendar/core/-/core-6.1.7.tgz"
-  integrity sha512-Hc63ARSyABlNo10B3NkA0z8ndaDmq5MKpcBB2iQsGQyn8N8cyn/x6V284Je1EwDoKsBlbrZAj+j+efBO+QQf5g==
+"@fullcalendar/core@^6.1.11", "@fullcalendar/core@~6.1.11", "@fullcalendar/core@~6.1.7":
+  version "6.1.11"
+  resolved "https://registry.npmjs.org/@fullcalendar/core/-/core-6.1.11.tgz"
+  integrity sha512-TjG7c8sUz+Vkui2FyCNJ+xqyu0nq653Ibe99A66LoW95oBo6tVhhKIaG1Wh0GVKymYiqAQN/OEdYTuj4ay27kA==
   dependencies:
     preact "~10.12.1"
 
@@ -424,10 +424,10 @@
   dependencies:
     "@fullcalendar/daygrid" "~6.1.7"
 
-"@fullcalendar/vue3@^6.1.7":
-  version "6.1.7"
-  resolved "https://registry.npmjs.org/@fullcalendar/vue3/-/vue3-6.1.7.tgz"
-  integrity sha512-GGLY9eYF7ahlZkOX7gtRmgZVgVX6B6/01ZH9LSce8bQo/3F0OsnuXdwXaQGMGY6PzJ0ZDcCTcouQjsvmedZJDg==
+"@fullcalendar/vue3@^6.1.11":
+  version "6.1.11"
+  resolved "https://registry.npmjs.org/@fullcalendar/vue3/-/vue3-6.1.11.tgz"
+  integrity sha512-jBoDS0WSpuOM9ZgjL3lNh6o385u/LthFZDaMUACjVVJZh3JuBbuA7ghdUvIelcTNXa5VRCkSZOpivTJWOnLfcg==
 
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.8"
