@@ -273,6 +273,7 @@ const valid = ref(false)
 const swValido = ref(false)
 const $http = inject('http')
 const $swal = inject('$swal')
+
 let validate = () => {
   form.value.validate()
 }
@@ -287,8 +288,7 @@ watch(dialog, newValue => {
  
  
 const emitOk = () => {
-  console.log("emitOk" + valid.value)
-
+ 
   form.value.validate()
   if ( valid.value) {
     overlay.value = true
@@ -303,7 +303,6 @@ const emitOk = () => {
   
   } else {
     swValido.value = true
-    console.log("Validation failed")  
   }
 }
 

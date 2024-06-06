@@ -21,14 +21,15 @@
             class="mt-0 pt-0"
             :items="items" 
             :is-loading="isLoading"
-            :headers="headers"
+            :headers="visibleHeaders"
             :item-total="itemTotal"
             :items-page="itemsPerPage"
             :page="page"
             @change-page="changePage"
             @item-per-page="changeItemPerPage"
             @cancelar-cita="showMessageDelete"
-          />
+            @ver-foto="showFotoPsicologo"
+          /> 
         </VCol> 
       </VRow>
     </VForm>
@@ -58,6 +59,27 @@
         </VRow>  
       </VCardText>
     </CancelarCita>
+    <Foto 
+      ref="form"
+      v-model:modelValue="showFoto"  
+      @cancel="closeModalFoto"   
+    >
+      <VCardText slot="resultado">
+        <VRow>
+          <VCol
+            cols="12"
+            md="12"
+            class="align-center"
+          >  
+            <img
+              :src="imageSource"
+              alt="Foto"
+              style="width: 70%; height: auto;"
+            > 
+          </VCol> 
+        </VRow>  
+      </VCardText>
+    </Foto>
   </VCard>
 </template>
 
@@ -65,8 +87,10 @@
 import useAppConfig from '@core/@app-config/useAppConfig'
 import { requiredObject } from '@core/utils/validation.js'
 import Swal from 'sweetalert2'
+import { computed, ref } from 'vue'
 import CancelarCita from './mis-citas-components/CancelarCita.vue'
 import CitasTabla from './mis-citas-components/CitasTable.vue'
+import Foto from './mis-citas-components/Foto.vue'
 
 let items = ref([])
 let tableKey = 0
@@ -74,9 +98,11 @@ let page = ref(1)
 let itemsPerPage = ref(25)
 let itemTotal = ref(0)
 let isLoading = ref(false) 
+let imageSource = ref('') 
 let form = ref(null) 
 let valid = ref(false)
 const showConfirm = ref(false)
+const showFoto = ref(false)
 let { overlay } = useAppConfig()
 let entityData = ref({ curso: '' })  
 const $http = inject('http')
@@ -90,7 +116,7 @@ let validate = () => {
   form.value.validate()
 }
 
-const headers = [
+const headers = ref([
   { title: 'ID CITA', key: 'id_sesion', filterable: true, width: '75', sortable: false },
   { title: 'PSICOLOGO', key: 'psicologo', align: 'center', filterable: true, width: '220', sortable: false },
   { title: 'TALLER', key: 'nombre_taller', align: 'center', filterable: true, width: '250', sortable: false },
@@ -100,8 +126,13 @@ const headers = [
   { title: 'SEDE', key: 'sede', align: 'center', sortable: false },
   { title: 'ENLACE', key: 'enlace', align: 'center', sortable: false },
   { title: 'ESTADO', key: 'desc_situacion', align: 'start', width: '100', sortable: false  },
+  { title: '', key: 'dni', filterable: true, width: '75', sortable: false, visible: false },
   { title: 'OPCIONES', key: 'options', align: 'left', width: '100' },
-]
+])
+
+const visibleHeaders = computed(() => {
+  return headers.value.filter(header => header.visible !== false)
+})
 
 function loadAlert(text, type = "warning", title = "Advertencia") {
   Swal.fire({
@@ -119,10 +150,7 @@ function getCitas(){
       setOverlay(false) 
     })  
 }
-function cancelarCita(){ 
-  //  overlay.value = true
-  
-  console.log("cancelarCita" )
+function cancelarCita(){  
   overlay.value = true
   $http.post('programming/cancelarCita', entityData.value)
     .then(response => {
@@ -136,14 +164,23 @@ function cancelarCita(){
     }) 
 }
 
-function showMessageDelete(item) { 
-  console.log("showConfirm"+item.value.id_sesion)
+function showMessageDelete(item) {  
   entityData.value = item.value
   showConfirm.value = true
+}
+function showFotoPsicologo(item) {  
+  entityData.value = item.value
+  console.log(entityData.value)
+  imageSource.value="https://isilcom.isil.pe/fotos_banner/"+entityData.value.dni+".jpg"
+  showFoto.value = true
 }
 function  closeModal() {
   showConfirm.value = false
 }
+function  closeModalFoto() {
+  showFoto.value = false
+}
+
 onMounted(() => { 
 
   getCitas()

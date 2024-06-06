@@ -4,6 +4,8 @@ export const required = value => (value && value.length ? true : 'Este campo es 
 
 export const requiredObject = value => !!value || 'Este campo es requerido'
 
+export const numeric = value => /^\d+$/.test(value) || 'Solo se permiten números' 
+
 export const emailValidator = value => {
   if (isEmpty(value)) {
     return true
@@ -159,7 +161,7 @@ export const minNumber = (value, min) => () => {
   return (Number(min) <= valueAsNumber ) || `Debe ingresar un valor mínimo`
 } 
 
-export const sch_required = (checks) =>{
+export const sch_required = checks =>{
 
   /* if (((checks[0] == 1) || (checks[1] == 2)) && ((checks[2] == 3) || (checks[3] == 4))) 
   {
@@ -171,16 +173,19 @@ export const sch_required = (checks) =>{
   if ((checks.includes('1') || checks.includes('2') ) || (checks.includes('3') || checks.includes('4') ) ) {
     return true
   }
+  
   return 'Elegir al menos una opción'
 }
 
 export const fileValidator = value => {
   console.log(value)
   if(!value.length) return false
-  var ext = value[0].name.substring(value[0].name.lastIndexOf(".")+1);
+  var ext = value[0].name.substring(value[0].name.lastIndexOf(".")+1)
   if(ext != 'jpeg' && ext != 'png' && ext != 'pdf' && ext != 'docx') return 'Tipo de archivo no válido'
-  if(value[0].size > 2000000 ) return 'No puede exceder los 2 MB!';
+  if(value[0].size > 2000000 ) return 'No puede exceder los 2 MB!'
+  
   return true
+
   //return !value || !value.length || value[0].size < 2000000 || 'No puede exceder los 2 MB!'
   
 }

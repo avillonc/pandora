@@ -388,7 +388,7 @@ class Appointment extends Model
         $user = Auth::user(); 
         $pidm = $request->session()->get('pidm');
         try{ 
-            DB::connection('oracle')->select('CALL ISIL.SP_PANDORA_DATOS_PACIENTE_ACTUALIZAR(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [ 
+            DB::connection('oracle')->select('CALL ISIL.SP_PANDORA_DATOS_PACIENTE_ACTUALIZAR(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [ 
              $pidm  , 
              $user->dni,
              $request['genero'],
@@ -399,6 +399,7 @@ class Appointment extends Model
              $request['celular_contacto'],
              $request['nombre_contacto'],
              $request['nickname'],
+             $request['id_parentesco'],
              $user->dni,
          ]);
 
@@ -406,4 +407,87 @@ class Appointment extends Model
            return ("No se pudo registrar la ficha");
         }
     }
+
+    public static function getCasoEspeciales($request)
+    { 
+        $user = Auth::user(); 
+        $pidm = $request->session()->get('pidm');
+        $dni = $user->dni;
+        
+        $pdo = DB::connection('oracle')->getPdo();
+        $stmt = $pdo->prepare("BEGIN ISIL.SP_PANDORA_CASOS_ESPECIALES_LISTAR(:dni, :cursor); END;");
+        $stmt->bindParam(':dni',$dni, \PDO::PARAM_STR); 
+        $stmt->bindParam(':cursor', $cursor, \PDO::PARAM_STMT | \PDO::PARAM_INPUT_OUTPUT);
+     
+        $stmt->execute(); 
+        oci_execute($cursor);
+        $result = oci_fetch_all($cursor, $data, null, null, OCI_FETCHSTATEMENT_BY_ROW);
+        $data = array_map('array_change_key_case', $data); 
+        $cantidadRegistros = count($data);
+        return [
+            "data" => $data, "rows" => $cantidadRegistros
+        ]; 
+    } 
+
+    public static function getDiscapacidadPac($request)
+    { 
+        $pidm = $request['pidm'];
+        $pdo = DB::connection('oracle')->getPdo();
+        $stmt = $pdo->prepare("BEGIN ISIL.SP_PANDORA_PACIENTE_DISCAPACIDAD_LISTAR(:pidm, :cursor); END;");
+        $stmt->bindParam(':pidm',$pidm, \PDO::PARAM_STR); 
+        $stmt->bindParam(':cursor', $cursor, \PDO::PARAM_STMT | \PDO::PARAM_INPUT_OUTPUT);
+     
+        $stmt->execute(); 
+        oci_execute($cursor);
+        $result = oci_fetch_all($cursor, $data, null, null, OCI_FETCHSTATEMENT_BY_ROW);
+        $data = array_map('array_change_key_case', $data); 
+        $cantidadRegistros = count($data);
+        return [
+            "data" => $data, "rows" => $cantidadRegistros
+        ]; 
+    } 
+
+    public static function registrarIncidencia($request)
+    { 
+        $user = Auth::user();  
+        $pidm = $request->session()->get('pidm');
+        try{ 
+            DB::connection('oracle')->select('CALL ISIL.SP_PANDORA_INCIDENCIAS_INSERT(?, ?, ?, ?, ?, ?)', [ 
+             $request['id_incidencia'],
+             $request['pidm'],
+             $pidm,
+             $request['detalle_incidencia'],
+             $request['solucion'], 
+             $user->dni,
+         ]);
+
+        }catch(\Exception $e){
+           return ("No se pudo registrar la ficha");
+        }
+    }
+
+    public static function getIncidencias($request)
+    { 
+        $pidm = $request['pidm'];
+        $pidm_docente = $request->session()->get('pidm');
+
+      //  dd($pidm_docente);
+
+        $pdo = DB::connection('oracle')->getPdo();
+        $stmt = $pdo->prepare("BEGIN ISIL.SP_PANDORA_INCIDENCIAS_LISTAR(:pidm,:pidm_docente, :cursor); END;");
+        $stmt->bindParam(':pidm',$pidm, \PDO::PARAM_STR); 
+        $stmt->bindParam(':pidm_docente',$pidm_docente, \PDO::PARAM_STR); 
+        $stmt->bindParam(':cursor', $cursor, \PDO::PARAM_STMT | \PDO::PARAM_INPUT_OUTPUT);
+     
+        $stmt->execute(); 
+        oci_execute($cursor);
+        $result = oci_fetch_all($cursor, $data, null, null, OCI_FETCHSTATEMENT_BY_ROW);
+        $data = array_map('array_change_key_case', $data); 
+        $cantidadRegistros = count($data);
+        return [
+            "data" => $data, "rows" => $cantidadRegistros
+        ]; 
+    } 
+
+
 }

@@ -20,23 +20,7 @@ class Data extends Model
            return DB::connection('oracle')->select($query);
    
     }
-
  
-    public static function getPeriodos()
-    {
-            $query = " select distinct substr(CAMPANA,1,6) periodo
-                from isil.tab_pla_campana
-                where substr(CAMPANA,5,2) in ('00','10','20')
-            --union
-            --select ' TODO'
-            --    from Dual
-            order by 1 DESC";
-    
-           return DB::connection('oracle')->select($query);
-   
-    }
- 
-   
 
     public static function getMaestras($request)
     { 
@@ -61,21 +45,5 @@ class Data extends Model
             ]; 
     }
 
-    public  function getColegios($colegio)
-        { 
-        
-        $pdo = DB::connection('oracle')->getPdo();
-        $stmt = $pdo->prepare("BEGIN ISIL.SP_ISMA_COLEGIOS_LISTAR(:colegio,:cursor); END;");
-        $stmt->bindParam(':colegio',$colegio, \PDO::PARAM_STR);
-        $stmt->bindParam(':cursor', $cursor, \PDO::PARAM_STMT | \PDO::PARAM_INPUT_OUTPUT);
-        $stmt->execute();
-        oci_execute($cursor);
-        $result = oci_fetch_all($cursor, $data, null, null, OCI_FETCHSTATEMENT_BY_ROW);
-        $data = array_map('array_change_key_case', $data); 
-        $cantidadRegistros = count($data);
-        return [
-            "data" => $data, "rows" => $cantidadRegistros
-        ]; 
-
-        }
+ 
 }

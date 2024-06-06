@@ -10,10 +10,10 @@ class MenuItem extends Model
 {
     use HasFactory;
 
-    public function getItemsByRole()
+    public static function  getItemsByRole()
     {
         //$optionItems = array();
-        //dd(session('roles'));
+       // dd(session('roles'));
         $roleIds = explode(",", session('roles'));
 
         if (in_array(1, $roleIds)) //ADMIN
@@ -34,7 +34,7 @@ class MenuItem extends Model
             ->whereIn('id', $authItems)
             ->select(DB::raw("menu_items.*"))->orderBy('sortNum')->get();
         return $menuItems;
-        //dd($menuItems);
+       // dd($menuItems);
         /*if ($roleId == 1)
             $authItems = MenuItem::select(DB::RAW('id AS menu_item_id, enabled'))->where('enabled', 1)->get();
         else
@@ -63,7 +63,7 @@ class MenuItem extends Model
         return $this->getItems($menuItems, 0);*/
     }
 
-    public function getItems($menuItems, $fatherId)
+    public static function getItems($menuItems, $fatherId)
     {
         $menuList = $menuItems->filter(function ($item) use ($fatherId) {
             return $item->fatherId == $fatherId;

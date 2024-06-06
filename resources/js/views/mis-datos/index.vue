@@ -144,6 +144,22 @@
             cols="12"
             md="4"
           >
+            <VSelect
+              v-model="entityData.id_parentesco"
+              label="Tipo parentesco"
+              outlined
+              density="compact"
+              :items="parentescos"
+              item-title="name"
+              item-value="id"
+              :menu-props="{ offsetY: true }"
+              hide-details="auto" 
+            />  
+          </VCol>
+          <VCol
+            cols="12"
+            md="4"
+          >
             <VTextField
               v-model="entityData.celular_contacto"
               :rules="[validators.requiredObject]" 
@@ -157,7 +173,7 @@
           </VCol>
           <VCol
             cols="12"
-            md="8"
+            md="4"
           >
             <VTextField
               v-model="entityData.nombre_contacto"
@@ -216,6 +232,8 @@ const $http = inject('http')
 const showConfirm = ref(false)
 let generos = ref([]) 
 let estadosCiviles = ref([])
+let parentescos = ref([])
+
 const validators = { requiredObject, emailValidator }
 let validate = () => {
   form.value.validate()
@@ -275,6 +293,14 @@ function initialize() {
   $http.post('data/get-maestras', { idTabla: '20' })
     .then(response => {
       estadosCiviles.value = response.data.data
+      overlay.value = false 
+    }).catch(error => {
+      overlay.value = false
+    })    
+
+  $http.post('data/get-maestras', { idTabla: '21' })
+    .then(response => {
+      parentescos.value = response.data.data
       overlay.value = false 
     }).catch(error => {
       overlay.value = false

@@ -74,6 +74,27 @@ class AppointmentController extends Controller
     }
     }
     
+    public function getCasoEspeciales(Request $request)
+    { 
+         
+    try {   
+        $data = Appointment::getCasoEspeciales($request); 
+        return response($data, Response::HTTP_OK); 
+    } catch (\Throwable $th) {
+        //throw $th;
+    }
+    }
+
+    public function getDiscapacidadPac(Request $request)
+    {  
+    try {   
+        $data = Appointment::getDiscapacidadPac($request); 
+        return response($data, Response::HTTP_OK); 
+    } catch (\Throwable $th) {
+        //throw $th;
+    }
+    }
+
     public function getDocumentos(Request $request)
     { 
         
@@ -144,6 +165,19 @@ class AppointmentController extends Controller
         $user = Auth::user(); 
     try {  
         $data = Appointment::getCuposDisponibles($request);
+      
+        return response($data, Response::HTTP_OK); 
+    } catch (\Throwable $th) {
+        //throw $th;
+    }
+      
+    }
+
+    public function getIncidencias(Request $request)
+    {
+        $user = Auth::user(); 
+    try {  
+        $data = Appointment::getIncidencias($request);
       
         return response($data, Response::HTTP_OK); 
     } catch (\Throwable $th) {
@@ -428,6 +462,17 @@ class AppointmentController extends Controller
 
         } catch (Exception $e) {
             return $this->sendError('Error al registra la ficha');
+        }
+    }
+
+    public function registrarIncidencia(Request $request)
+    { 
+        try {    
+                Appointment::registrarIncidencia($request);   
+            return response([], Response::HTTP_OK); 
+
+        } catch (Exception $e) {
+            return $this->sendError('Error al registra la incidencia');
         }
     }
 }

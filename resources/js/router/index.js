@@ -81,6 +81,16 @@ const router = createRouter({
             requiresAuth: true,
           },
         }, 
+        {
+          path: 'casos-especiales',
+          name: 'casos-especiales',
+          component: () => import('../views/casos-especiales/index.vue'),
+          beforeEnter: ifAuthenticated,
+          meta: {
+            requiresAuth: true,
+          },
+        }, 
+        
       ],
     },
     {

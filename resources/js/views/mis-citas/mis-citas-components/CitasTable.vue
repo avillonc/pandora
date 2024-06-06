@@ -184,9 +184,12 @@ export default {
       this.entityData = {}
       this.$emit('item-per-page', item)
     },
-    deleteItem(item){
-      console.log("deleteItem", item.value)
+    deleteItem(item){ 
       this.$emit('cancelar-cita', item)
+    },
+
+    verFoto(item){ 
+      this.$emit('ver-foto', item)
     },
     closeDialog(){
       this.isDialogOpen = false

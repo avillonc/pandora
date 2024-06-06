@@ -48,6 +48,7 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:sanctum'], function () {
 
 
 Route::group(['prefix' => 'data', 'middleware' => 'auth:sanctum'], function () {
+    Route::resource('menu',   \App\Http\Controllers\MenuItemController::class);
     Route::get('termcode', [\App\Http\Controllers\DataController::class, 'getTermcode']);
     Route::post('currentTermCode', [\App\Http\Controllers\DataController::class, 'getCurrentTermCode']);
     Route::post('getUsers', [\App\Http\Controllers\DataController::class, 'getUsers']);
@@ -78,6 +79,10 @@ Route::group(['prefix' => 'programming','middleware' => 'auth:sanctum'], functio
     Route::post('registrarInforme', [\App\Http\Controllers\AppointmentController::class, 'registrarInforme']); 
     Route::post('getPaciente', [\App\Http\Controllers\AppointmentController::class, 'getPaciente']);
     Route::post('actualizarDatos', [\App\Http\Controllers\AppointmentController::class, 'actualizarDatos']);
+    Route::post('getCasoEspeciales', [\App\Http\Controllers\AppointmentController::class, 'getCasoEspeciales']);
+    Route::post('getDiscapacidadPac', [\App\Http\Controllers\AppointmentController::class, 'getDiscapacidadPac']);
+    Route::post('registrarIncidencia', [\App\Http\Controllers\AppointmentController::class, 'registrarIncidencia']);
+    Route::post('getIncidencias', [\App\Http\Controllers\AppointmentController::class, 'getIncidencias']);
 });
 
 

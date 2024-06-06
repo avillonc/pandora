@@ -1,13 +1,4 @@
-<template>
-  <VCardText>
-    <VRow>
-      <VCol
-        cols="12"
-        md="6"
-      />
-      <VSpacer />
-    </VRow>
-  </VCardText>
+<template> 
   <VDataTableServer
     class="m-0 p-0 elevation-1"
     :headers="headers"
@@ -22,54 +13,38 @@
     @update:itemsPerPage="changeItemPerPage"
     @update:page="changePage"
   >
-    <template #[`item.HORARIO`]="{item}">
-      <slot name="nombres">
-        <strong>{{ item.value.HORARIO }}</strong>
-      </slot>
-    </template>
-
-    <template #[`item.TITULO`]="{item}">
-      <slot name="nombres">
-        <span class="font-weight-bold">{{ item.value.TITULO }}</span>
-      </slot>
-    </template>
+    <template #[`item.options`]="{ item }">
+      <VTooltip
+        location="top"
+        text="Ver"
+      >
+        <template #activator="{ props }">
+          <VAvatar 
+            v-bind="props"
+            size="28"
+            color="success"
+            class="mx-1"
+          >
+            <VIcon
+              size="20"
+              icon="mdi-pencil-outline"
+              @click="editItemIncidencia(item)"
+            />
+          </VAvatar>
+        </template>
+      </VTooltip> 
+    </template> 
     
-    <template #[`item.LUN`]="{item}">
-      <slot name="nombres">
-        <span class="text-error font-weight-medium">{{ item.value.LUN }}</span>
-      </slot>
-    </template>
-
-    <template #[`item.MAR`]="{item}">
-      <slot name="nombres">
-        <span class="font-weight-medium">{{ item.value.MAR }}</span>
-      </slot>
-    </template>
-
-    <template #[`item.MIE`]="{item}">
-      <slot name="nombres">
-        <span class="text-error font-weight-medium">{{ item.value.MAR }}</span>
-      </slot>
-    </template>
-
-    <template #[`item.JUE`]="{item}">
-      <slot name="nombres">
-        <span class="text-secondary font-weight-medium">{{ item.value.JUE }}</span>
-      </slot>
-    </template>
-
-    <template #[`item.VIE`]="{item}">
-      <slot name="nombres">
-        <span class="text-error font-weight-medium">{{ item.value.VIE }}</span>
-      </slot>
-    </template>
-
-    <template #[`item.SAB`]="{item}">
-      <slot name="nombres">
-        <span class="font-weight-medium">{{ item.value.SAB }}</span>
-      </slot>
-    </template>
-
+    <template #[`item.desc_situacion`]="{item}">
+      <VChip
+        small
+        :color="enabledColor(item.value.desc_situacion)"
+        :class="`${enabledColor(item.value.desc_situacion)}--text`"
+        class="v-chip-light-bg"
+      >
+        {{ item.value.desc_situacion }}
+      </VChip>
+    </template>    
     <template #bottom />
     <template #loading>
       <div class="text-center py-4">
@@ -141,6 +116,18 @@ export default {
 
     const entityData = ref({})
 
+    const enabledColor = value => {
+      switch (value) {
+      case 'INASISTENCIA':
+        return 'error'
+      case 'PROGRAMADA':
+        return 'warning'
+      case 'REALIZADA':
+        return 'success'
+      default:
+        return 'secondary'
+      }
+    }
 
     let page = ref(props.page)
     let itemsPerPage = ref(props.itemsPage)
@@ -151,6 +138,7 @@ export default {
       overlay,
       validators: { required, requiredObject },
       entityData,
+      enabledColor,
     }
   },
   methods: {
@@ -177,8 +165,10 @@ export default {
     changeItemPerPage(item){
       this.entityData = {}
       this.$emit('item-per-page', item)
-    },
- 
+    }, 
+    editItemIncidencia(item) {
+      this.$emit('edit-incidencia', item)
+    }, 
     closeDialog(){
       this.isDialogOpen = false
       this.entityData = {}

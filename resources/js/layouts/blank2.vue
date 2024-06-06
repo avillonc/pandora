@@ -26,7 +26,7 @@
         @click="drawer = !drawer"
       /> 
       <VBtn
-        v-for="(item, index) in items"
+        v-for="(item, index) in menulist"
         :key="index"  
         @click="selectItem(item)" 
       >
@@ -46,9 +46,9 @@
     >
       <VList dense>
         <VListItem
-          v-for="(item, index) in items"
+          v-for="(item, index) in menulist"
           :key="index"
-          link
+          path
           @click="selectItem(item)"
         >
           <VListItemIcon>
@@ -82,25 +82,46 @@
 </template>
 
 <script setup>
-import store from '@/store'
-import logoh from '@images/logos/isil_logo.png'
-
 import UserProfile from '@/layouts/components/UserProfile.vue'
+import store from '@/store'
+import useAppConfig from '@core/@app-config/useAppConfig'
+import logoh from '@images/logos/isil_logo.png'
+import { inject } from "vue"
 
+var { overlay, menulist, navigation } = useAppConfig()
+let navMenuItems = ref([])
 const drawer = ref(false)
+const http = inject('http')
 
+/*
 const items = [
   { icon: 'mdi-calendar', title: 'AGENDAR CITA', link: '/citasProgramar' },
   { icon: 'mdi-calendar-check', title: 'MIS CITAS', link: '/misCitas' },
   { icon: 'mdi-file-upload', title: 'MIS DOCUMENTOS', link: '/mis-documentos' }, 
   { icon: 'mdi-account', title: 'MIS DATOS', link: '/mis-datos' }, 
-]
+  { icon: 'mdi-account', title: 'CASOS ESPECIALES', link: '/casos-especiales' }, 
+]*/
+
+onBeforeMount(() => { 
+
+  http.get('/system/menu')
+    .then(response => {
+      // console.log(response.data )
+
+      // navMenuItems.value = response.data
+      //menulist.value =  response.data
+      //navigation.value =  []  
+
+      //console.log(menulist.value )
+      //console.log(navMenuItems.value )
+    })
+})
 
 const router = useRouter()
 
 const selectItem = item => {
   drawer.value = false
-  router.push(item.link)
+  router.push(item.path)
 }
 </script>
 

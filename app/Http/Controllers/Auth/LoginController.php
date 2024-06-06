@@ -28,6 +28,8 @@ class LoginController extends Controller
 
         $dni = explode("@", $id);
 
+       // dd($user);
+
         if (isset($dni[0])) {
 
             $userExists = User::where('dni', $dni[0])
@@ -37,6 +39,8 @@ class LoginController extends Controller
                     $rol = 1;
                 } else {
                     // Obtiene ROL de GORIROL
+                    //dd($dni[0]);
+                    
                     $rol = $this->getUserRol($dni[0]);
                     if (!$rol) {
                         return redirect($_ENV["APP_URL"] . "/app/logout");

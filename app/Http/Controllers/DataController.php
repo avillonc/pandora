@@ -5,11 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
-use App\Models\Programs;
-use App\Models\Variables;
-use App\Models\Data;
-use App\Models\PaymentMethods;
+use Illuminate\Support\Facades\DB;  
+use App\Models\Data; 
 
 class DataController extends Controller
 {
@@ -32,12 +29,6 @@ class DataController extends Controller
         return response($data, Response::HTTP_OK);
     }
 
-    public function getConfiguration(Request $request)
-    {
-        $items = Variables::getConfigTermCode();
-
-        return response($items, Response::HTTP_OK);
-    }
  
     public function getUsers(Request $request)
     {
